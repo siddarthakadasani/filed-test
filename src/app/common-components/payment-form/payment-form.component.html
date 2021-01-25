@@ -1,0 +1,47 @@
+<div class="custom-form">
+    <form [formGroup]="paymentForm">
+       <div>
+        <mat-form-field appearance="outline" class="custom-field">
+            <mat-label>Credit Card Number</mat-label>
+            <input matInput placeholder="5467 6897 2313" formControlName="creditCardNumber">
+          </mat-form-field>
+          <p class="warn-message"  *ngIf="(paymentForm.get('creditCardNumber').touched && paymentForm.get('creditCardNumber').invalid) ||
+          (paymentForm.get('creditCardNumber').invalid && paymentForm.get('creditCardNumber').hasError('pattern'))">Please enter valid credit number</p>
+       </div> 
+       <div>
+        <mat-form-field appearance="outline" class="custom-field">
+            <mat-label>Credit Holder</mat-label>
+            <input matInput placeholder="John Snow" formControlName="creditHolder">
+          </mat-form-field>
+          <p class="warn-message" *ngIf="(paymentForm.get('creditHolder').touched && paymentForm.get('creditHolder').invalid)">Please enter card holder's name</p>
+       </div> 
+       <div>
+        <mat-form-field appearance="outline" class="custom-field">
+            <mat-label>Expiration Date</mat-label>
+            <input matInput placeholder="01/21" formControlName="expirationDate" (input)="onExpiration($event)">
+          </mat-form-field>
+          <p class="warn-message" *ngIf="(paymentForm.get('expirationDate').touched && paymentForm.get('expirationDate').invalid) ||
+          (paymentForm.get('expirationDate').invalid && paymentForm.get('expirationDate').hasError('pattern')) ||  paymentForm.get('expirationDate').hasError('minLength')">Please enter valid expiry date</p>
+       <p class="warn-message" *ngIf="showExpiryError">Please enter valid expiry year</p>
+        </div> 
+       <div>
+        <mat-form-field appearance="outline" class="custom-field">
+            <mat-label>Secuity Code</mat-label>
+            <input matInput placeholder="000" formControlName="securityCode" maxlength="3">
+          </mat-form-field>
+          <p class="warn-message" *ngIf="(paymentForm.get('securityCode').touched && paymentForm.get('securityCode').invalid) ||
+          (paymentForm.get('securityCode').invalid && paymentForm.get('securityCode').hasError('pattern'))">Please enter valid code</p>
+       </div> 
+       <div>
+        <mat-form-field appearance="outline" class="custom-field">
+            <mat-label>Amount</mat-label>
+            <input matInput placeholder="100" formControlName="amount">
+          </mat-form-field>
+          <p class="warn-message" *ngIf="(paymentForm.get('amount').touched && paymentForm.get('amount').invalid) ||
+          (paymentForm.get('amount').invalid && paymentForm.get('amount').hasError('pattern'))">Please enter valid amount</p>
+       </div> 
+
+    </form>
+
+</div>
+<app-button (postClick)="onPayment($event)" [isBtnDisabled]="!paymentForm.valid || showExpiryError " [title]="'Pay'"></app-button>
